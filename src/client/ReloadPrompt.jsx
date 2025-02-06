@@ -10,10 +10,10 @@ const SEC = 1000
 const INTERVAL_MS = 10 * SEC
 
 const ReloadPrompt = () => {
-  const [isHidePrompt, setIsHidePrompt] = useState(false)
+  // const [isHidePrompt, setIsHidePrompt] = useState(false)
   const [isUpdating, setIsUpdating] = useState(false)
   const {
-    offlineReady: [offlineReady],
+    offlineReady: [offlineReady, setOfflineReady],
     needRefresh: [needRefresh, setNeedRefresh],
     updateServiceWorker
   } = useRegisterSW({
@@ -37,7 +37,8 @@ const ReloadPrompt = () => {
   }
 
   const onConfirm = () => {
-    setIsHidePrompt(true)
+    console.log(onConfirm)
+    setOfflineReady(false)
   }
 
   const onUpdate = () => {
@@ -51,7 +52,7 @@ const ReloadPrompt = () => {
   }
 
   return (
-    (!isHidePrompt && offlineReady || needRefresh) && (
+    (offlineReady || needRefresh) && (
       <div className='fixed bottom-4 left-1/2 z-50 w-full max-w-sm -translate-x-1/2 pwa:bottom-8'>
         <Alert
           className={`
@@ -73,7 +74,7 @@ const ReloadPrompt = () => {
               </AlertDescription>
             </div>
           )}
-          {!isUpdating && needRefresh && (
+          {!isUpdating && needRefresh && !offlineReady && (
             <>
               <div onClick={onUpdate}>
                 <AlertTitle className='flex items-center gap-2'>

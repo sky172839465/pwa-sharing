@@ -52,7 +52,11 @@ export default {
   				'4': 'hsl(var(--chart-4))',
   				'5': 'hsl(var(--chart-5))'
   			}
-  		}
+  		},
+			screens: {
+        // https://github.com/tailwindlabs/tailwindcss/discussions/6755
+        pwa: { raw: '(display-mode: standalone)' }
+      }
   	}
   },
   plugins: [require("tailwindcss-animate"), typography],
