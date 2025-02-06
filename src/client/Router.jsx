@@ -10,6 +10,7 @@ import ErrorElement from './ErrorElement'
 import routes from './routes'
 
 const LazyNavs = lazy(() => import('./pages/index'))
+const LazyReloadPrompt = lazy(() => import('./ReloadPrompt'))
 
 const Root = () => {
   const { pathname } = useLocation()
@@ -25,6 +26,7 @@ const Root = () => {
           <LazyNavs />
         </div>
         <Outlet />
+        <LazyReloadPrompt />
       </main>
     </div>
   )
