@@ -1,25 +1,31 @@
-import { Suspense } from 'react'
+import { lazy, Suspense } from 'react'
 import {
   createBrowserRouter,
   RouterProvider,
   Outlet,
-  Link
+  useLocation
 } from 'react-router-dom'
 import LoadingElement from './LoadingElement'
 import ErrorElement from './ErrorElement'
 import routes from './routes'
 
+const LazyNavs = lazy(() => import('./pages/index'))
+
 const Root = () => {
+  const { pathname } = useLocation()
   return (
     <div className='flex justify-center items-center h-dvh w-full'>
-      <header className='fixed top-0 bg-foreground text-background w-full h-16'>
-        <div className='mx-auto flex items-center content-center justify-between p-4'>
-          <div>
-            <Link to='/'>Home</Link>
-          </div>
+      <main>
+        <div
+          className={`
+            fixed top-4 left-0
+            ${pathname === '/' ? 'hidden' : ''}
+          `}
+        >
+          <LazyNavs />
         </div>
-      </header>
-      <Outlet />
+        <Outlet />
+      </main>
     </div>
   )
 }

@@ -1,6 +1,10 @@
+import { html } from './article.md'
+
 const Page = () => {
   return (
-    <div>SW</div>
+    <div className='prose'>
+      <div dangerouslySetInnerHTML={{ __html: html }} />
+    </div>
   )
 }
 
