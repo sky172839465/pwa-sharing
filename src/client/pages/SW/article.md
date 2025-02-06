@@ -10,5 +10,3 @@ Artificial Intelligence (AI) has been making waves in various industries, from h
 - **Healthcare:** AI can assist in diagnosing diseases, creating personalized treatment plans, and improving patient outcomes.
 - **Finance:** AI-driven algorithms predict market trends, offering investment opportunities and risk management solutions.
 - **Customer Service:** Chatbots and virtual assistants enhance user experience by providing instant support.
-
-> "The best way to predict the future is to invent it." — Alan Kay

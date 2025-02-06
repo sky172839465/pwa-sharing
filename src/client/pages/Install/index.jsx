@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button"
 
 const Page = () => {
   return (
-    <div>
+    <div className='flex justify-center m-auto'>
       <Button>Install</Button>
     </div>
   )

@@ -1,36 +1,12 @@
-import { lazy, Suspense } from 'react'
+import { Suspense } from 'react'
 import {
   createBrowserRouter,
-  RouterProvider,
-  Outlet,
-  useLocation
+  RouterProvider
 } from 'react-router-dom'
 import LoadingElement from './LoadingElement'
 import ErrorElement from './ErrorElement'
 import routes from './routes'
-
-const LazyNavs = lazy(() => import('./pages/index'))
-const LazyReloadPrompt = lazy(() => import('./ReloadPrompt'))
-
-const Root = () => {
-  const { pathname } = useLocation()
-  return (
-    <div className='flex justify-center items-center h-dvh w-full'>
-      <main>
-        <div
-          className={`
-            fixed top-4 left-0
-            ${pathname === '/' ? 'hidden' : ''}
-          `}
-        >
-          <LazyNavs />
-        </div>
-        <Outlet />
-        <LazyReloadPrompt />
-      </main>
-    </div>
-  )
-}
+import Root from './Root'
 
 const Router = () => {
   const browserRoutes = [{
