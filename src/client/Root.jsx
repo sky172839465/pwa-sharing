@@ -13,7 +13,7 @@ const Root = () => {
   const { pathname } = useLocation()
   return (
     <>
-      <div className='flex flex-col h-dvh w-full'>
+      <div className='flex flex-col min-h-dvh w-full'>
         {pathname !== '/' && (
           <LazyNavs />
         )}
