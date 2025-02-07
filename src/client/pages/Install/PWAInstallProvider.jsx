@@ -1,10 +1,13 @@
-import { useRef, useCallback } from 'react'
+import { useRef, useState, useCallback } from 'react'
 import PWAInstallContext from './PWAInstallContext'
+
+const isDeviceStandaloneMode = window.matchMedia('(display-mode: standalone)').matches
 
 const PWAInstallProvider = (props) => {
   const { children } = props
   const installPWAWrapperRef = useRef()
   const installPWARef = useRef()
+  const isStandaloneState = useState(false)
 
   const getPWAInstallRef = () => {
     if (!installPWARef.current) {
@@ -31,6 +34,8 @@ const PWAInstallProvider = (props) => {
   const value = {
     installPWARef,
     installPWAWrapperRef,
+    isStandaloneState,
+    isDeviceStandaloneMode,
     showDialog,
     hideDialog
   }

@@ -27,6 +27,7 @@
     "serve-static": "^1.16.2",
     "tailwind-merge": "^3.0.1",
     "tailwindcss-animate": "^1.0.7",
+    "usehooks-ts": "^3.1.1",
     "workbox-core": "^7.3.0",
     "workbox-precaching": "^7.3.0"
   },
