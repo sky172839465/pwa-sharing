@@ -1,0 +1,23 @@
+import useSWRMutation from 'swr/mutation'
+
+const fetcher = async (endpoint) => {
+  const response = await fetch(endpoint, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  const result = await response.json()
+  return result
+}
+
+const useSendNotification = () => {
+  const { data, error, isMutating, trigger } = useSWRMutation(
+    '/api/send-notification',
+    (endpoint) => fetcher(endpoint)
+  )
+  return { data, error, isLoading: isMutating, trigger }
+}
+
+
+export default useSendNotification

@@ -9,7 +9,9 @@
     "server": "run-s build && node --watch src/server/index.js",
     "lint": "eslint .",
     "preview": "vite preview",
-    "gen:pwa-assets": "pwa-assets-generator"
+    "prepare": "run-s gen:vapid",
+    "gen:pwa-assets": "pwa-assets-generator",
+    "gen:vapid": "mkdir -p conf && node ./scripts/genVapid.js"
   },
   "dependencies": {
     "@hono/node-server": "^1.13.8",
@@ -25,9 +27,11 @@
     "react-dom": "^19.0.0",
     "react-router-dom": "^6.29.0",
     "serve-static": "^1.16.2",
+    "swr": "^2.3.2",
     "tailwind-merge": "^3.0.1",
     "tailwindcss-animate": "^1.0.7",
     "usehooks-ts": "^3.1.1",
+    "web-push": "^3.6.7",
     "workbox-core": "^7.3.0",
     "workbox-precaching": "^7.3.0"
   },

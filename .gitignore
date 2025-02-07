@@ -12,6 +12,8 @@ dist
 dist-ssr
 dev-dist
 *.local
+public/data/*
+conf
 
 # Editor directories and files
 .vscode/*
