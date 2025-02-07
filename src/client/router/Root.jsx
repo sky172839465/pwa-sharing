@@ -4,9 +4,9 @@ import {
   ScrollRestoration,
   useLocation
 } from 'react-router-dom'
-import PWAInstall from './pages/Install/PWAInstall'
+import PWAInstall from '../pages/Install/PWAInstall'
 
-const LazyNavs = lazy(() => import('./pages/index'))
+const LazyNavs = lazy(() => import('../pages/index'))
 const LazyReloadPrompt = lazy(() => import('./ReloadPrompt'))
 
 const Root = () => {

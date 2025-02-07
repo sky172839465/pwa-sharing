@@ -7,7 +7,7 @@ import LoadingElement from './LoadingElement'
 import ErrorElement from './ErrorElement'
 import routes from './routes'
 import Root from './Root'
-import PWAInstallProvider from './pages/Install/PWAInstallProvider'
+import PWAInstallProvider from '../pages/Install/PWAInstallProvider'
 
 const Router = () => {
   const browserRoutes = [{

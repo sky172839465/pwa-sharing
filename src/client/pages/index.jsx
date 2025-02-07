@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom"
-import routes from "../routes"
+import routes from "../router/routes"
 import { Button } from "@/components/ui/button"
 import { isEmpty } from "lodash-es"
 
