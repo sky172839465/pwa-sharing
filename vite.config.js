@@ -19,6 +19,9 @@ export default defineConfig(({ mode }) => {
         "@": path.resolve(__dirname, "./src"),
       },
     },
+    build: {
+      emptyOutDir: true
+    },
     server: {
       https: isProd || {
         key: fs.readFileSync('./cert/key.pem'),
@@ -26,7 +29,7 @@ export default defineConfig(({ mode }) => {
       },
       proxy: {
         '/api': {
-          target: 'http://localhost:8080',
+          target: 'https://localhost:8080',
           changeOrigin: true,
           secure: false
         }

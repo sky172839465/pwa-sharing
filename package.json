@@ -5,9 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:server": "vite -c vite.server.config.js",
     "build": "vite build",
-    "server": "run-s build && node --watch src/server/index.js",
+    "build:server": "vite -c vite.server.config.js build",
     "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "install:mkcert": "brew install mkcert && mkcert -install",
     "preview": "vite preview",
     "prepare": "run-s gen:vapid",
@@ -16,7 +18,6 @@
     "gen:vapid": "mkdir -p conf && node ./scripts/genVapid.js"
   },
   "dependencies": {
-    "@hono/node-server": "^1.13.8",
     "@khmyznikov/pwa-install": "0.4.4",
     "@radix-ui/react-slot": "^1.1.2",
     "class-variance-authority": "^0.7.1",
@@ -39,6 +40,8 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",
+    "@hono/vite-build": "^1.3.0",
+    "@hono/vite-dev-server": "^0.18.1",
     "@tailwindcss/typography": "^0.5.16",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",

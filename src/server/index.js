@@ -1,5 +1,3 @@
-import { serve } from '@hono/node-server'
-import { serveStatic } from '@hono/node-server/serve-static'
 import { Hono } from 'hono'
 import path from 'path'
 import fs from 'fs'
@@ -8,14 +6,6 @@ import { filter, isEmpty, random } from 'lodash-es'
 import { tryit } from 'radash'
 
 const app = new Hono()
-
-app.use('*', serveStatic({ root: './dist' }))
-
-app.get('/', (c) => {
-  return c.html(
-    fs.readFileSync(path.join(process.cwd(), 'dist/index.html'), 'utf-8')
-  )
-})
 
 const vapid = JSON.parse(
   fs.readFileSync(path.join(process.cwd(), 'conf/vapidKeys.json'), 'utf-8')
@@ -47,7 +37,7 @@ const sendNotification = async (subscription) => {
 }
 
 app.get('/api/status', async (c) => {
-  return c.text('200')
+  return c.json({ status: 'ok' })
 })
 
 app.get('/api/check-subscribe', async (c) => {
@@ -70,14 +60,4 @@ app.post('/api/send-notification', async (c) => {
   return c.json({ status: true, message: 'Notification sent!' })
 })
 
-app.all('*', (c) => {
-  // Redirect 404 to '/'
-  return c.html(
-    fs.readFileSync(path.join(process.cwd(), 'dist/index.html'), 'utf-8')
-  )
-})
-
-serve({
-  fetch: app.fetch,
-  port: 8080,
-})
+export default app
