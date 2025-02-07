@@ -15,7 +15,7 @@
     "prepare": "run-s gen:vapid",
     "gen:cert": "mkdir -p cert && mkcert --key-file cert/key.pem --cert-file cert/cert.pem localhost 127.0.0.1",
     "gen:pwa-assets": "pwa-assets-generator",
-    "gen:vapid": "mkdir -p conf && node ./scripts/genVapid.js"
+    "gen:vapid": "node ./scripts/genVapid.js"
   },
   "dependencies": {
     "@khmyznikov/pwa-install": "0.4.4",
@@ -60,6 +60,7 @@
     "vite": "^6.1.0",
     "vite-plugin-markdown": "^2.2.0",
     "vite-plugin-pwa": "^0.21.1",
-    "workbox-window": "^7.3.0"
+    "workbox-window": "^7.3.0",
+    "wrangler": "^3.107.3"
   }
 }
