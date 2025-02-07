@@ -2,14 +2,17 @@ import { Button } from "@/components/ui/button"
 import { Bell, CircleCheck } from "lucide-react"
 import useNotification from "./useNotification"
 import useSendNotification from "./useSendNotification"
+import useSubscribe from "./useSubscribe"
 
 const Page = () => {
   const {
     isPending,
     isRegistered,
     isGranted,
-    registerForNotifications
+    registerForNotifications,
+    subscription
   } = useNotification()
+  const { trigger: sendMe, isLoading: isSendMeLoading } = useSubscribe()
   const { trigger, isLoading } = useSendNotification()
   return (
     <div className='flex justify-center m-auto gap-4'>
@@ -33,12 +36,20 @@ const Page = () => {
         }
       </Button>
       {isRegistered && (
-        <Button
-          onClick={() => trigger()}
-          disabled={isLoading}
-        >
-          Send notifications
-        </Button>
+        <>
+          <Button
+            onClick={() => sendMe(subscription)}
+            disabled={isLoading || isSendMeLoading}
+          >
+            Send me notifications
+          </Button>
+          <Button
+            onClick={() => trigger()}
+            disabled={isLoading}
+          >
+            @all notifications
+          </Button>
+        </>
       )}
     </div>
   )

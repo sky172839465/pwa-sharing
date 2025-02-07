@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import useSubscribe from './useSubscribe.js'
 import { tryit } from 'radash'
+import useCheckSubscribe from './useCheckSubscribe.js'
 
 const urlBase64ToUint8Array = (base64String) => {
   const padding = '='.repeat((4 - base64String.length % 4) % 4)
@@ -27,7 +28,9 @@ const useNotification = () => {
   const [isPending, setIsPending] = useState(false)
   const [isRegistered, setIsRegistered] = useState(false)
   const [isGranted, setIsGranted] = useState(getDefaultIsGranted)
+  const [subscription, setSubscription] = useState()
   const { trigger } = useSubscribe()
+  const { data: isSubscribe } = useCheckSubscribe(subscription)
 
   useEffect(() => {
     const checkIsRegistered = async () => {
@@ -39,6 +42,7 @@ const useNotification = () => {
       setIsPending(true)
       const registration = await navigator.serviceWorker.ready
       const subscription = await registration.pushManager.getSubscription()
+      setSubscription(subscription)
       console.log({ subscription })
       if (!subscription) {
         console.log('checkIsRegistered: subscription not exist')
@@ -72,6 +76,7 @@ const useNotification = () => {
       applicationServerKey: convertedVapidKey
     })
     console.log({ subscription })
+    setSubscription(subscription)
     const [error, result] = await tryit(() => trigger(subscription))()
     if (error) {
       console.error('Error subscribing to notifications:', error)
@@ -89,7 +94,9 @@ const useNotification = () => {
     isPending,
     isRegistered,
     isGranted,
-    registerForNotifications
+    isSubscribe,
+    registerForNotifications,
+    subscription
   }
 }
 

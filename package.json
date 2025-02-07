@@ -8,8 +8,10 @@
     "build": "vite build",
     "server": "run-s build && node --watch src/server/index.js",
     "lint": "eslint .",
+    "install:mkcert": "brew install mkcert && mkcert -install",
     "preview": "vite preview",
     "prepare": "run-s gen:vapid",
+    "gen:cert": "mkdir -p cert && mkcert --key-file cert/key.pem --cert-file cert/cert.pem localhost 127.0.0.1",
     "gen:pwa-assets": "pwa-assets-generator",
     "gen:vapid": "mkdir -p conf && node ./scripts/genVapid.js"
   },

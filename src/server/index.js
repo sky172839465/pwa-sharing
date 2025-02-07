@@ -4,7 +4,7 @@ import { Hono } from 'hono'
 import path from 'path'
 import fs from 'fs'
 import webPush from 'web-push'
-import { random } from 'lodash-es'
+import { filter, isEmpty, random } from 'lodash-es'
 import { tryit } from 'radash'
 
 const app = new Hono()
@@ -42,18 +42,30 @@ const sendNotification = async (subscription) => {
     return [error]
   }
 
+  console.log(result)
   return [undefined, result]
 }
+
+app.get('/api/status', async (c) => {
+  return c.text('200')
+})
+
+app.get('/api/check-subscribe', async (c) => {
+  const endpoint = await c.req.query('endpoint')
+  const isSubscribe = !isEmpty(filter(subscriptions, { endpoint }))
+  return c.json({ status: true, isSubscribe })
+})
 
 // accept user subscription
 app.post('/api/subscribe', async (c) => {
   const subscription = await c.req.json()
+  subscriptions.push(subscription)
   await sendNotification(subscription)
   return c.json({ status: true, message: 'Subscribed successfully!' })
 })
 
 // send notification to all subscribe user
-app.post('/api/send-notification', async (c) => {  
+app.post('/api/send-notification', async (c) => { 
   await Promise.all(subscriptions.map(sendNotification))
   return c.json({ status: true, message: 'Notification sent!' })
 })
