@@ -4,6 +4,9 @@ import {
   ScrollRestoration,
   useLocation
 } from 'react-router-dom'
+import { Toaster } from "@/components/ui/sonner"
+import { toast } from "sonner"
+import { SWRConfig } from 'swr'
 import PWAInstall from '../pages/Install/PWAInstall'
 
 const LazyNavs = lazy(() => import('../pages/index'))
@@ -12,7 +15,11 @@ const LazyReloadPrompt = lazy(() => import('./ReloadPrompt'))
 const Root = () => {
   const { pathname } = useLocation()
   return (
-    <>
+    <SWRConfig
+      value={{
+        onError: error => toast(error.message)
+      }}
+    >
       <div className='flex flex-col min-h-dvh w-full'>
         {pathname !== '/' && (
           <LazyNavs />
@@ -22,9 +29,10 @@ const Root = () => {
         </div>
       </div>
       <PWAInstall />
+      <Toaster />
       <LazyReloadPrompt />
       <ScrollRestoration />
-    </>
+    </SWRConfig>
   )
 }
 export default Root
