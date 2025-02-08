@@ -1,7 +1,7 @@
 import useSWR from 'swr'
 
 const fetcher = async (subscription) => {
-  const response = await fetch(`/api/check-subscribe?endpoint=${subscription.endpoint}`, {
+  const response = await fetch(`${window.API_HOST}/api/check-subscribe?endpoint=${subscription.endpoint}`, {
     headers: {
       'Content-Type': 'application/json'
     }

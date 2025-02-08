@@ -14,7 +14,7 @@ const fetcher = async (endpoint, body) => {
 
 const useSubscribe = () => {
   const { data, error, isMutating, trigger } = useSWRMutation(
-    '/api/subscribe',
+    `${window.API_HOST}/api/subscribe`,
     (endpoint, { arg: body }) => fetcher(endpoint, body)
   )
   return { data, error, isLoading: isMutating, trigger }
