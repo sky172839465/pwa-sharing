@@ -1,9 +1,23 @@
+import { Button } from '@/components/ui/button'
 import { html } from './article.md'
+import useUnregister from './useUnregister'
 
 const Page = () => {
+  const { trigger, isPending, isRegistered } = useUnregister()
+
   return (
-    <div className='md:max-w-xl m-auto container prose p-4'>
-      <div dangerouslySetInnerHTML={{ __html: html }} />
+    <div className='flex flex-col'>
+      <div className='text-center m-4'>
+        <Button
+          onClick={trigger}
+          disabled={!isRegistered || isPending}
+        >
+          Unregister SW
+        </Button>
+      </div>
+      <div className='md:max-w-xl m-auto container prose p-4'>
+        <div dangerouslySetInnerHTML={{ __html: html }} />
+      </div>
     </div>
   )
 }
