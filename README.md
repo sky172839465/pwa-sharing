@@ -15,9 +15,9 @@
   - Parallel precache files
 - Notifiaction [How](#how-to-implement-notification)
   - Catch notification by service worker
-  - Can update installed app unreadCount
-  - Click notification redirect to `/home` page
   - Click notification to open web app or website in browser
+  - Click notification redirect to `/home` page
+  - Can update installed app unreadCount
   - Unsubscribe notification
 
 ### Quick start
@@ -56,6 +56,21 @@
 - Prepare web app manifests  
   - exmaple: https://pwa-sharing.pages.dev/manifest.webmanifest
   - generate from: https://github.com/sky172839465/pwa-sharing/blob/main/pwa.config.js
+- Rich install
+  <img width="1520" alt="Screenshot 2025-02-08 at 7 59 32 PM" src="https://github.com/user-attachments/assets/1e8fa4b7-891e-4b3b-8df7-e6f9a48316be" />
+- <details>
+    <summary>Fake install prompt</summary>
+    <table>
+      <tr>
+        <td>
+          <img src="https://github.com/user-attachments/assets/a69b5157-2628-4731-9d7c-011e7baffe3e" />
+        </td>
+        <td>
+          <img src="https://github.com/user-attachments/assets/cf32e855-b392-4366-aff1-f2b8bbacdd72" />
+        </td>
+      </tr>
+    </table>
+  </details>
 - ref
   - https://vite-pwa-org.netlify.app/guide/pwa-minimal-requirements.html#web-app-manifest
   - https://developer.mozilla.org/en-US/docs/Web/Manifest
@@ -76,6 +91,7 @@
     - example
       - service worker: https://github.com/sky172839465/pwa-sharing/blob/main/public/sw.js
       - prompt: https://github.com/sky172839465/pwa-sharing/blob/main/src/client/router/ReloadPrompt.jsx
+      ![IMG_5975](https://github.com/user-attachments/assets/95cd1f22-757c-4795-a333-9b11de7efeed)
 - Parallel precache files
   - problem: https://github.com/GoogleChrome/workbox/issues/2880
   - implement: https://github.com/sky172839465/pwa-sharing/pull/26/files
@@ -94,7 +110,9 @@
 - Client service worker
   - Add `push` event listener to catch notification from browser service and show notification, update web app badge unread count
     > Andriod unread count depend on it implement
+    ![IMG_5977](https://github.com/user-attachments/assets/445a9aa5-84e2-4860-b834-09a8d70ead3c)
   - Add `notificationclick` event listener to close notifiction & redirect to specific web app route
+    ![IMG_5976](https://github.com/user-attachments/assets/e7422ee8-8d09-4220-a5e8-75d11048c8fd)
   - example: https://github.com/sky172839465/pwa-sharing/blob/main/public/sw.js
 - Server
   - Add endpoint to store `subscription`
