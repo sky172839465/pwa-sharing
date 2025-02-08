@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react'
-import useSubscribe from './useSubscribe.js'
+import { useState, useEffect, useCallback } from 'react'
 import { tryit } from 'radash'
+import useSubscribe from './useSubscribe.js'
 import useCheckSubscribe from './useCheckSubscribe.js'
+import useUnsubscribe from './useUnsubscribe.js'
 
 const urlBase64ToUint8Array = (base64String) => {
   const padding = '='.repeat((4 - base64String.length % 4) % 4)
@@ -22,15 +23,16 @@ const vapidPublicKey = window.vapidPublicKey
 const convertedVapidKey = urlBase64ToUint8Array(vapidPublicKey)
 const isSWExist = ('serviceWorker' in navigator && 'PushManager' in window)
 const getIsGranted = permission => permission === 'granted'
-const getDefaultIsGranted = isSWExist ? getIsGranted(Notification.permission) : false
+const getDefaultIsGranted = () => isSWExist ? getIsGranted(Notification.permission) : false
 
 const useNotification = () => {
   const [isPending, setIsPending] = useState(false)
   const [isRegistered, setIsRegistered] = useState(false)
-  const [isGranted, setIsGranted] = useState(getDefaultIsGranted)
+  const [isGranted, setIsGranted] = useState(false)
   const [subscription, setSubscription] = useState()
-  const { trigger } = useSubscribe()
-  const { data: isSubscribe } = useCheckSubscribe(subscription)
+  const { trigger: subscribe } = useSubscribe()
+  const { trigger: unsubscribe } = useUnsubscribe()
+  const { data: isSubscribe, isLoading } = useCheckSubscribe(subscription)
 
   useEffect(() => {
     const checkIsRegistered = async () => {
@@ -41,10 +43,11 @@ const useNotification = () => {
 
       setIsPending(true)
       const registration = await navigator.serviceWorker.ready
-      const subscription = await registration.pushManager.getSubscription()
-      setSubscription(subscription)
-      console.log({ subscription })
-      if (!subscription) {
+      const newSubscription = await registration.pushManager.getSubscription()
+      setSubscription(newSubscription)
+      setIsGranted(newSubscription ? getDefaultIsGranted() : false)
+      console.log({ subscription: newSubscription })
+      if (!newSubscription) {
         console.log('checkIsRegistered: subscription not exist')
         setIsPending(false)
         return
@@ -55,6 +58,20 @@ const useNotification = () => {
     }
     checkIsRegistered()
   }, [])
+
+  const unsubscribeNotification = useCallback(() => {
+    subscription.unsubscribe()
+    unsubscribe(subscription)
+    setIsRegistered(false)
+    setSubscription()
+    setIsGranted(false)
+  }, [subscription, unsubscribe, setIsRegistered, setSubscription, setIsGranted])
+
+  useEffect(() => {
+    if (!isLoading && isSubscribe === false && subscription) {
+      unsubscribeNotification(subscription)
+    }
+  }, [unsubscribeNotification, isLoading, isSubscribe, subscription])
 
   const registerForNotifications = async () => {
     if (!isSWExist) {
@@ -77,7 +94,7 @@ const useNotification = () => {
     })
     console.log({ subscription })
     setSubscription(subscription)
-    const [error, result] = await tryit(() => trigger(subscription))()
+    const [error, result] = await tryit(() => subscribe(subscription))()
     if (error) {
       console.error('Error subscribing to notifications:', error)
       setIsPending(false)
@@ -95,8 +112,9 @@ const useNotification = () => {
     isRegistered,
     isGranted,
     isSubscribe,
+    subscription,
     registerForNotifications,
-    subscription
+    unsubscribeNotification
   }
 }
 

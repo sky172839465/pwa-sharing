@@ -1,3 +1,4 @@
+import { get } from 'lodash-es'
 import useSWR from 'swr'
 
 const fetcher = async (subscription) => {
@@ -7,7 +8,7 @@ const fetcher = async (subscription) => {
     }
   })
   const result = await response.json()
-  return result
+  return get(result, 'isSubscribe')
 }
 
 const useCheckSubscribe = (subscription) => {

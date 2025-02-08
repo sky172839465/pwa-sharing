@@ -24,7 +24,10 @@ const ReloadPrompt = () => {
 
       // on page load check new sw, if exist trigger upload & refresh flow
       r.update().then(() => updateServiceWorker(true))
-      setInterval(() => r.update(), INTERVAL_MS)
+      setInterval(() => {
+        console.log('Periodic check')
+        r.update()
+      }, INTERVAL_MS)
     },
     onRegisterError(error) {
       console.log('SW registration error', error)
@@ -37,7 +40,6 @@ const ReloadPrompt = () => {
   }
 
   const onConfirm = () => {
-    console.log(onConfirm)
     setOfflineReady(false)
   }
 
