@@ -1,7 +1,7 @@
 import { Hono } from 'hono'
 // import webPush from 'web-push'
 import { buildPushPayload } from '@block65/webcrypto-web-push'
-import { filter, isEmpty, random } from 'lodash-es'
+import { filter, get, isEmpty, random, size } from 'lodash-es'
 import { tryit } from 'radash'
 import vapid from '../../conf/vapidKeysConf'
 
@@ -21,6 +21,15 @@ const vapidDetails = {
 
 // store user subscriptions
 let subscriptions = []
+
+const clearSubscriptions = () => {
+  console.log('Clearing subscriptions...')
+  subscriptions.length = 0
+}
+
+// Run cleanup every 1 hr
+const ONE_HOUR = 60 * 60 * 1000
+setInterval(clearSubscriptions, ONE_HOUR);
 
 const ALLOWED_ORIGIN = 'https://pwa-sharing.pages.dev'
 
@@ -67,7 +76,7 @@ const sendNotification = async (subscription) => {
   const message = {
     data: JSON.stringify({
       title: 'Hello!',
-      body: `This is a push notification from server. ${new Date().toISOString()}`,
+      body: `Push notification from server. ${new Date().toISOString()}`,
       unreadCount: random(0, 5)
     })
   }
@@ -81,18 +90,11 @@ const sendNotification = async (subscription) => {
 
   if (!response.ok) {
     // If the response is not OK (status outside 200–299)
-    const [errorData, errorText] = await Promise.all([
-      response.json(),
-      response.text()
-    ])
-    console.log(
-      `sendNotification, status ${response.status}, statusText: ${response.statusText}`,
-      errorData.message || JSON.stringify(errorData),
-      errorText
-    )
-  } else {
-    console.log(`sendNotification, status ${response.status}`)
+    console.log(`sendNotification, status ${response.status}, statusText: ${response.statusText}`)
+    return [new Error(response.statusText)]
   }
+
+  console.log(`sendNotification, status ${response.status}`)
 
   return [undefined, response]
 }
@@ -115,6 +117,18 @@ app.post('/api/subscribe', async (c) => {
   return c.json({ status: true, message: 'Subscribed successfully!' })
 })
 
+// remove user subscription
+app.post('/api/unsubscribe', async (c) => {
+  const subscription = await c.req.json()
+  const endpoint = get(subscription, 'endpoint')
+  const newSubscriptions = filter(subscriptions, subscription => {
+    return subscription.endpoint !== endpoint
+  })
+  console.log(`Unsubscribe count ${size(subscriptions) - size(newSubscriptions)}`)
+  subscriptions = newSubscriptions
+  return c.json({ status: true, message: 'Unsubscribed successfully!' })
+})
+
 // send notification to all subscribe user
 app.post('/api/send-notification', async (c) => { 
   const env = c.env
@@ -124,10 +138,6 @@ app.post('/api/send-notification', async (c) => {
 
   await Promise.all(subscriptions.map(sendNotification))
   return c.json({ status: true, message: 'Notification sent!' })
-})
-
-app.get('/', (c) => {
-  return c.text('Hello Hono!')
 })
 
 export default app

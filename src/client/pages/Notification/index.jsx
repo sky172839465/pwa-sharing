@@ -9,11 +9,14 @@ const Page = () => {
     isPending,
     isRegistered,
     isGranted,
+    isSubscribe,
+    subscription,
     registerForNotifications,
-    subscription
+    unsubscribeNotification
   } = useNotification()
-  const { trigger: sendMe, isLoading: isSendMeLoading } = useSubscribe()
+  const { trigger: subscribe, isLoading: isSendMeLoading } = useSubscribe()
   const { trigger, isLoading } = useSendNotification()
+
   return (
     <div className="flex flex-col gap-4 items-center m-auto">
       <p>iOS please install to web app first</p>
@@ -37,10 +40,10 @@ const Page = () => {
             )
           }
         </Button>
-        {isRegistered && (
+        {isRegistered && isSubscribe && (
           <>
             <Button
-              onClick={() => sendMe(subscription)}
+              onClick={() => subscribe(subscription)}
               disabled={isLoading || isSendMeLoading}
             >
               Send me notifications
@@ -50,6 +53,12 @@ const Page = () => {
               disabled={isLoading}
             >
               @all notifications
+            </Button>
+            <Button
+              onClick={unsubscribeNotification}
+              disabled={isLoading}
+            >
+              Unsubscription notifications
             </Button>
           </>
         )}
