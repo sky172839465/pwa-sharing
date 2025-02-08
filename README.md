@@ -16,6 +16,7 @@
   - Can update installed app unreadCount
   - Click notification redirect to `/home` page
   - Click notification to open web app or website in browser
+  - Unsubscribe notification
 
 ### Quick start
 - Install dependencies
@@ -52,7 +53,7 @@
 #### How to make website installable
 - Prepare web app manifests  
   - exmaple: https://pwa-sharing.pages.dev/manifest.webmanifest
-  - generate from: https://github.com/sky172839465/pwa-sharing/blob/v0.6.0/pwa.config.js#L29
+  - generate from: https://github.com/sky172839465/pwa-sharing/blob/main/pwa.config.js
 - ref
   - https://vite-pwa-org.netlify.app/guide/pwa-minimal-requirements.html#web-app-manifest
   - https://developer.mozilla.org/en-US/docs/Web/Manifest
@@ -68,28 +69,28 @@
     - ref: https://vite-pwa-org.netlify.app/guide/auto-update.html
   - prompt for update
     - example
-      - service worker: https://github.com/sky172839465/pwa-sharing/blob/v0.6.0/public/sw.js
-      - prompt: https://github.com/sky172839465/pwa-sharing/blob/v0.6.0/src/client/router/ReloadPrompt.jsx
+      - service worker: https://github.com/sky172839465/pwa-sharing/blob/main/public/sw.js
+      - prompt: https://github.com/sky172839465/pwa-sharing/blob/main/src/client/router/ReloadPrompt.jsx
 - ref
   - https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers
 
 #### How to implement notification
 - Prepare vapid `publicKey` `privateKey`
-  - example: https://github.com/sky172839465/pwa-sharing/blob/v0.6.0/scripts/genVapid.js
+  - example: https://github.com/sky172839465/pwa-sharing/blob/main/scripts/genVapid.js
 - Client frontend
   - Request notification permission from user
   - After permission granted, ask `subscription` from browser service
   - Send `subscription` to service
     > `subscription` provide endpoint & keys allow server send request to browser service make a notification
-  - example: https://github.com/sky172839465/pwa-sharing/blob/v0.6.0/src/client/pages/Notification/useNotification.js#L59
+  - example: https://github.com/sky172839465/pwa-sharing/blob/main/src/client/pages/Notification/useNotification.js
 - Client service worker
   - Add `push` event listener to catch notification from browser service
   - Add `notificationclick` event listener to close notifiction & redirect to specific web app route
-  - example: https://github.com/sky172839465/pwa-sharing/blob/v0.6.0/public/sw.js#L20
+  - example: https://github.com/sky172839465/pwa-sharing/blob/main/public/sw.js#L20
 - Server
   - Add endpoint to store `subscription`
   - Using `subscription` endpoint send notification to browser service
-  - example: https://github.com/sky172839465/pwa-sharing/blob/v0.6.0/src/server/index.js#L76
+  - example: https://github.com/sky172839465/pwa-sharing/blob/main/src/server/index.js
 - Ref
   - https://developer.mozilla.org/zh-TW/docs/Web/API/Notifications_API/Using_the_Notifications_API
   - https://github.com/web-push-libs/web-push
