@@ -80,7 +80,11 @@ const sendNotification = async (subscription) => {
       unreadCount: random(0, 5)
     })
   }
-  const payload = await buildPushPayload(message, subscription, vapidDetails)
+  const [payloadError, payload] = await tryit(() => buildPushPayload(message, subscription, vapidDetails))()
+  if (payloadError) {
+    console.error('buildPushPayload get error', payloadError)
+    return [payloadError]
+  }
   // const [error, result] = await tryit(() => webPush.sendNotification(subscription, payload))()
   const [error, response] = await tryit(() => fetch(subscription.endpoint, payload))()
   if (error) {
@@ -90,11 +94,11 @@ const sendNotification = async (subscription) => {
 
   if (!response.ok) {
     // If the response is not OK (status outside 200–299)
-    console.log(`sendNotification, status ${response.status}, statusText: ${response.statusText}`)
+    console.log(`response not ok, status ${response.status}, statusText: ${response.statusText}`)
     return [new Error(response.statusText)]
   }
 
-  console.log(`sendNotification, status ${response.status}`)
+  // console.log(`sendNotification, status ${response.status}`)
 
   return [undefined, response]
 }

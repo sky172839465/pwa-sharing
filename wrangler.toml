@@ -8,4 +8,4 @@ compatibility_flags = ["nodejs_compat"]
 NODE_ENV = "production"
 
 [observability.logs]
-enabled = false
+enabled = true
