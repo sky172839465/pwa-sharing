@@ -5,13 +5,13 @@
 <p align="center">https://pwa-sharing.pages.dev</p>
 
 ### Features
-- Install to web app [How](/#how-to-make-website-installable)
+- Install to web app [How](#how-to-make-website-installable)
   - install prompt
   - Rich install
-- Install & update service worker [How](/#how-to-install-and-update-sw)
+- Install & update service worker [How](#how-to-install-and-update-sw)
   - No page active enter website automatic reload to install & active new service worker
   - Have active page, every 10sec detect update & show update banner click to update
-- Notifiaction [How](/#how-to-implement-notification)
+- Notifiaction [How](#how-to-implement-notification)
   - Catch notification by service worker
   - Can update installed app unreadCount
   - Click notification redirect to `/home` page
