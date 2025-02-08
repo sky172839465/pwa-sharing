@@ -1,9 +1,10 @@
-name: gh-pages
+name: bump-version
 on:
   push:
     branches: ["main"]
 
 concurrency:
+  group: "release"
   cancel-in-progress: true
 
 jobs:
