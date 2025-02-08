@@ -16,6 +16,32 @@ webPush.setVapidDetails(
 // store user subscriptions
 let subscriptions = []
 
+const allowedOrigin = 'https://pwa-sharing.pages.dev';
+
+// Middleware to enforce allowed origins
+app.use('*', async (c, next) => {
+  const env = c.env
+
+  const origin = c.req.header('Origin')
+
+  // Apply CORS restriction only in production
+  if (env.NODE_ENV === 'production' && origin !== allowedOrigin) {
+    return c.json({ error: 'Access Denied' }, 403)
+  }
+
+  // Set CORS headers (only in production)
+  if (env.NODE_ENV === 'production') {
+    c.header('Access-Control-Allow-Origin', allowedOrigin)
+    c.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+    c.header('Access-Control-Allow-Headers', 'Content-Type')
+  } else {
+    // Allow all origins in development
+    c.header('Access-Control-Allow-Origin', '*')
+  }
+
+  return next()
+})
+
 const sendNotification = async (subscription) => {
   const payload = JSON.stringify({
     title: 'Hello!',
