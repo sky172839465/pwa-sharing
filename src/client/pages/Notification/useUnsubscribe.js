@@ -15,7 +15,10 @@ const fetcher = async (endpoint, body) => {
 const useUnsubscribe = () => {
   const { data, error, isMutating, trigger } = useSWRMutation(
     `${window.API_HOST}/api/unsubscribe`,
-    (endpoint, { arg: body }) => fetcher(endpoint, body)
+    (endpoint, { arg: body }) => fetcher(endpoint, body),
+    {
+      onError: console.log
+    }
   )
   return { data, error, isLoading: isMutating, trigger }
 }
