@@ -117,6 +117,11 @@ app.post('/api/subscribe', async (c) => {
 
 // send notification to all subscribe user
 app.post('/api/send-notification', async (c) => { 
+  const env = c.env
+  if (env.NODE_ENV === 'production') {
+    return c.json({ error: 'Don\'t noise other people.' }, 403)
+  }
+
   await Promise.all(subscriptions.map(sendNotification))
   return c.json({ status: true, message: 'Notification sent!' })
 })
