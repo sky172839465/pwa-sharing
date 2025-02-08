@@ -8,13 +8,16 @@ import vapidKeys from './conf/vapidKeysConf'
 
 const { publicKey } = vapidKeys
 
+const API_HOST = 'https://pwa-sharing.sky172839465.workers.dev'
+
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
   const isProd = mode === 'production'
   return {
     plugins: [react(), pwaPluginConfig, mdPlugin.plugin({ mode: 'html' })],
     define: {
-      'window.vapidPublicKey': `'${publicKey}'`
+      'window.vapidPublicKey': `'${publicKey}'`,
+      'window.API_HOST': `'${isProd ? API_HOST : ''}'`
     },
     resolve: {
       alias: {
@@ -33,7 +36,8 @@ export default defineConfig(({ mode }) => {
         '/api': {
           target: 'https://localhost:8080',
           changeOrigin: true,
-          secure: false
+          secure: false,
+          rewrite: (path) => (console.log(path, path.replace(/^\/api/, '/api')), path.replace(/^\/api/, '/api'))
         }
       }
     }

@@ -13,7 +13,7 @@ const fetcher = async (endpoint) => {
 
 const useSendNotification = () => {
   const { data, error, isMutating, trigger } = useSWRMutation(
-    '/api/send-notification',
+    `${window.API_HOST}/api/send-notification`,
     (endpoint) => fetcher(endpoint)
   )
   return { data, error, isLoading: isMutating, trigger }
