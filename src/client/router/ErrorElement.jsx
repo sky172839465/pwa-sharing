@@ -1,3 +1,4 @@
+import { Button } from '@/components/ui/button'
 import { Link, useRouteError } from 'react-router-dom'
 
 const ErrorElement = () => {
@@ -9,7 +10,7 @@ const ErrorElement = () => {
   console.error(error)
 
   return (
-    <div className='flex justify-center items-center w-full h-dvh'>
+    <div className='flex justify-center items-center w-full'>
       <div className='max-w-md'>
         <h1 className='text-5xl font-bold'>
           Oops!
@@ -25,7 +26,9 @@ const ErrorElement = () => {
             to='../'
             viewTransition
           >
+            <Button>
               Back to home
+            </Button>
           </Link>
         </div>
       </div>

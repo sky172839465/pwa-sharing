@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { Bell, CircleCheck } from "lucide-react"
+import { Bell, CircleCheck, Megaphone, BellDot, BellMinus } from "lucide-react"
 import useNotification from "./useNotification"
 import useSendNotification from "./useSendNotification"
 import useSubscribe from "./useSubscribe"
@@ -19,7 +19,7 @@ const Page = () => {
   return (
     <div className="flex flex-col gap-4 items-center m-auto">
       <p>iOS please install to web app first</p>
-      <div className='flex flex-row flex-wrap justify-center gap-4 md:flex-col'>
+      <div className='flex flex-col lg:flex-row flex-wrap justify-center gap-4 [&_button]:flex-1'>
         <Button
           onClick={registerForNotifications}
           disabled={isPending || isGranted}
@@ -40,26 +40,29 @@ const Page = () => {
           }
         </Button>
         {isRegistered && (
-          <>
+          <div className='contents [&_svg]:size-5'>
             <Button
               onClick={() => subscribe(subscription)}
               disabled={isLoading || isSendMeLoading}
             >
-              Send me notifications
+              <BellDot />
+              Send me notification
             </Button>
             <Button
               onClick={() => trigger()}
               disabled={isLoading}
             >
-              @all notifications
+              <Megaphone />
+              @all notification
             </Button>
             <Button
               onClick={unsubscribeNotification}
               disabled={isLoading}
             >
-              Unsubscription notifications
+              <BellMinus />
+              Unsubscription notification
             </Button>
-          </>
+          </div>
         )}
       </div>
     </div>
