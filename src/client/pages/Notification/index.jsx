@@ -60,7 +60,7 @@ const Page = () => {
               disabled={isLoading}
             >
               <BellMinus />
-              Unsubscription notification
+              Unsubscribe notification
             </Button>
           </div>
         )}
