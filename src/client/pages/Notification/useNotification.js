@@ -67,12 +67,6 @@ const useNotification = () => {
     setSubscription()
   }, [subscription, unsubscribe, setIsRegistered, setSubscription, setIsGranted])
 
-  useEffect(() => {
-    if (!isLoading && isSubscribe === false && subscription) {
-      unsubscribeNotification(subscription)
-    }
-  }, [unsubscribeNotification, isLoading, isSubscribe, subscription])
-
   const registerForNotifications = async () => {
     if (!isSWExist) {
       console.log('registerForNotifications: sw not exist')
