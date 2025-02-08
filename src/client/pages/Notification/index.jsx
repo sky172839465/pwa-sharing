@@ -9,7 +9,6 @@ const Page = () => {
     isPending,
     isRegistered,
     isGranted,
-    isSubscribe,
     subscription,
     registerForNotifications,
     unsubscribeNotification
@@ -40,7 +39,7 @@ const Page = () => {
             )
           }
         </Button>
-        {isRegistered && isSubscribe && (
+        {isRegistered && (
           <>
             <Button
               onClick={() => subscribe(subscription)}
