@@ -1,15 +1,11 @@
 import { Hono } from 'hono'
-import path from 'path'
-import fs from 'fs'
 import webPush from 'web-push'
 import { filter, isEmpty, random } from 'lodash-es'
 import { tryit } from 'radash'
+import vapid from '../../conf/vapidKeysConf'
 
 const app = new Hono()
 
-const vapid = JSON.parse(
-  fs.readFileSync(path.join(process.cwd(), 'conf/vapidKeys.json'), 'utf-8')
-)
 // 設定 Web Push VAPID 金鑰
 webPush.setVapidDetails(
   'mailto:sky172839465@gmail.com',
@@ -58,6 +54,10 @@ app.post('/api/subscribe', async (c) => {
 app.post('/api/send-notification', async (c) => { 
   await Promise.all(subscriptions.map(sendNotification))
   return c.json({ status: true, message: 'Notification sent!' })
+})
+
+app.get('/', (c) => {
+  return c.text('Hello Hono!')
 })
 
 export default app

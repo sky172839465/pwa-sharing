@@ -1,0 +1,8 @@
+name = "pwa-sharing"
+main = "src/server/index.js"
+compatibility_date = "2025-02-07"
+workers_dev = true
+compatibility_flags = ["nodejs_compat"]
+
+[observability.logs]
+enabled = true

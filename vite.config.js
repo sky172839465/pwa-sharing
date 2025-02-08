@@ -4,7 +4,9 @@ import path from 'path'
 import fs from 'fs'
 import mdPlugin from 'vite-plugin-markdown'
 import pwaPluginConfig from './pwa.config'
-import { publicKey } from './conf/vapidKeys.json'
+import vapidKeys from './conf/vapidKeysConf'
+
+const { publicKey } = vapidKeys
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
