@@ -81,8 +81,15 @@ const sendNotification = async (subscription) => {
 
   if (!response.ok) {
     // If the response is not OK (status outside 200–299)
-    const errorData = await response.json()
-    console.log(`sendNotification, status ${response.status}`, errorData.message || 'Unknown error')
+    const [errorData, errorText] = await Promise.all([
+      response.json(),
+      response.text()
+    ])
+    console.log(
+      `sendNotification, status ${response.status}, statusText: ${response.statusText}`,
+      errorData.message || JSON.stringify(errorData),
+      errorText
+    )
   } else {
     console.log(`sendNotification, status ${response.status}`)
   }
