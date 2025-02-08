@@ -28,7 +28,7 @@ const getDefaultIsGranted = () => isSWExist ? getIsGranted(Notification.permissi
 const useNotification = () => {
   const [isPending, setIsPending] = useState(false)
   const [isRegistered, setIsRegistered] = useState(false)
-  const [isGranted, setIsGranted] = useState(false)
+  const [isGranted, setIsGranted] = useState(getDefaultIsGranted)
   const [subscription, setSubscription] = useState()
   const { trigger: subscribe } = useSubscribe()
   const { trigger: unsubscribe } = useUnsubscribe()
@@ -45,7 +45,7 @@ const useNotification = () => {
       const registration = await navigator.serviceWorker.ready
       const newSubscription = await registration.pushManager.getSubscription()
       setSubscription(newSubscription)
-      setIsGranted(newSubscription ? getDefaultIsGranted() : false)
+      setIsGranted(!!newSubscription)
       console.log({ subscription: newSubscription })
       if (!newSubscription) {
         console.log('checkIsRegistered: subscription not exist')
@@ -63,8 +63,8 @@ const useNotification = () => {
     subscription.unsubscribe()
     unsubscribe(subscription)
     setIsRegistered(false)
-    setSubscription()
     setIsGranted(false)
+    setSubscription()
   }, [subscription, unsubscribe, setIsRegistered, setSubscription, setIsGranted])
 
   useEffect(() => {

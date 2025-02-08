@@ -8,6 +8,7 @@ import { Toaster } from "@/components/ui/sonner"
 import { toast } from "sonner"
 import { SWRConfig } from 'swr'
 import PWAInstall from '../pages/Install/PWAInstall'
+import { get } from 'lodash-es'
 
 const LazyNavs = lazy(() => import('../pages/index'))
 const LazyReloadPrompt = lazy(() => import('./ReloadPrompt'))
@@ -17,7 +18,7 @@ const Root = () => {
   return (
     <SWRConfig
       value={{
-        onError: (error, key) => toast(`${key} ${error.message}, ${error.toString()}`)
+        onError: (error) => toast(get(error, 'message', error))
       }}
     >
       <div className='flex flex-col min-h-dvh w-full'>
