@@ -32,7 +32,7 @@ const useNotification = () => {
   const [subscription, setSubscription] = useState()
   const { trigger: subscribe } = useSubscribe()
   const { trigger: unsubscribe } = useUnsubscribe()
-  const { data: isSubscribe, isLoading } = useCheckSubscribe(subscription)
+  const { data: isSubscribe } = useCheckSubscribe(subscription)
 
   useEffect(() => {
     const checkIsRegistered = async () => {
