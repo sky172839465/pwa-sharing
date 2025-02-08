@@ -32,7 +32,7 @@ const useNotification = () => {
   const [subscription, setSubscription] = useState()
   const { trigger: subscribe } = useSubscribe()
   const { trigger: unsubscribe } = useUnsubscribe()
-  const { data: isSubscribe, isLoading } = useCheckSubscribe(subscription)
+  const { data: isSubscribe } = useCheckSubscribe(subscription)
 
   useEffect(() => {
     const checkIsRegistered = async () => {
@@ -66,12 +66,6 @@ const useNotification = () => {
     setIsGranted(false)
     setSubscription()
   }, [subscription, unsubscribe, setIsRegistered, setSubscription, setIsGranted])
-
-  useEffect(() => {
-    if (!isLoading && isSubscribe === false && subscription) {
-      unsubscribeNotification(subscription)
-    }
-  }, [unsubscribeNotification, isLoading, isSubscribe, subscription])
 
   const registerForNotifications = async () => {
     if (!isSWExist) {
