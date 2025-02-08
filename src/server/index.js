@@ -73,14 +73,21 @@ const sendNotification = async (subscription) => {
   }
   const payload = await buildPushPayload(message, subscription, vapidDetails)
   // const [error, result] = await tryit(() => webPush.sendNotification(subscription, payload))()
-  const [error, result] = await tryit(() => fetch(subscription.endpoint, payload))()
+  const [error, response] = await tryit(() => fetch(subscription.endpoint, payload))()
   if (error) {
     console.error('sendNotification get error', error)
     return [error]
   }
 
-  console.log(`sendNotification, status ${result.status}`)
-  return [undefined, result]
+  if (!response.ok) {
+    // If the response is not OK (status outside 200–299)
+    const errorData = await response.json()
+    console.log(`sendNotification, status ${response.status}`, errorData.message || 'Unknown error')
+  } else {
+    console.log(`sendNotification, status ${response.status}`)
+  }
+
+  return [undefined, response]
 }
 
 app.get('/api/status', async (c) => {
