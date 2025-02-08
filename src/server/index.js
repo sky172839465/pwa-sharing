@@ -79,6 +79,7 @@ const sendNotification = async (subscription) => {
     return [error]
   }
 
+  console.log(result)
   return [undefined, result]
 }
 

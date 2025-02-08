@@ -1,0 +1,32 @@
+name: gh-pages
+on:
+  push:
+    branches: ["main"]
+
+concurrency:
+  cancel-in-progress: true
+
+jobs:
+  bump-version:
+    name: "Bump Version"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check needs
+        # see https://stackoverflow.com/a/67532120/4907315
+        if: >-
+          ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}
+        run: echo "Check needs"
+      - uses: "actions/checkout@v4"
+        with:
+          ref: ${{ github.ref }}
+          token: ${{ secrets.REPO_TOKEN }}
+      - name: "Automated Version Bump"
+        id: version-bump
+        uses: "phips28/gh-action-bump-version@master"
+        env:
+          GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
+        with:
+          version-type: "minor"
+          target-branch: "main"
+          tag-prefix: "v"
+          commit-message: "ci: bumps version to {{version}} [skip ci]"
