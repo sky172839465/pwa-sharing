@@ -17,7 +17,7 @@ const Root = () => {
   return (
     <SWRConfig
       value={{
-        onError: error => toast(error.message)
+        onError: (error, key) => toast(`${key} ${error.message}, ${error.toString()}`)
       }}
     >
       <div className='flex flex-col min-h-dvh w-full'>
