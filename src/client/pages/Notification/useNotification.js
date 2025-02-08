@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { tryit } from 'radash'
 import useSubscribe from './useSubscribe.js'
-import useCheckSubscribe from './useCheckSubscribe.js'
 import useUnsubscribe from './useUnsubscribe.js'
 
 const urlBase64ToUint8Array = (base64String) => {
@@ -32,7 +31,6 @@ const useNotification = () => {
   const [subscription, setSubscription] = useState()
   const { trigger: subscribe } = useSubscribe()
   const { trigger: unsubscribe } = useUnsubscribe()
-  const { data: isSubscribe } = useCheckSubscribe(subscription)
 
   useEffect(() => {
     const checkIsRegistered = async () => {
@@ -105,7 +103,6 @@ const useNotification = () => {
     isPending,
     isRegistered,
     isGranted,
-    isSubscribe,
     subscription,
     registerForNotifications,
     unsubscribeNotification

@@ -1,13 +1,13 @@
 import { Hono } from 'hono'
 // import webPush from 'web-push'
 import { buildPushPayload } from '@block65/webcrypto-web-push'
-import { filter, get, isEmpty, random, size } from 'lodash-es'
+import { filter, get, random, size } from 'lodash-es'
 import { tryit } from 'radash'
 import vapid from '../../conf/vapidKeysConf'
 
 const app = new Hono()
 
-// 設定 Web Push VAPID 金鑰
+// config webPush VAPID token
 // webPush.setVapidDetails(
 //   'mailto:sky172839465@gmail.com',
 //   vapid.publicKey,
@@ -101,12 +101,6 @@ const sendNotification = async (subscription) => {
 
 app.get('/api/status', async (c) => {
   return c.json({ status: 'ok' })
-})
-
-app.get('/api/check-subscribe', async (c) => {
-  const endpoint = await c.req.query('endpoint')
-  const isSubscribe = !isEmpty(filter(subscriptions, { endpoint }))
-  return c.json({ status: true, isSubscribe })
 })
 
 // accept user subscription
