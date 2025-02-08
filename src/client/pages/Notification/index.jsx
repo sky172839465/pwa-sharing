@@ -15,7 +15,7 @@ const Page = () => {
   const { trigger: sendMe, isLoading: isSendMeLoading } = useSubscribe()
   const { trigger, isLoading } = useSendNotification()
   return (
-    <div className='flex justify-center m-auto gap-4'>
+    <div className='flex flex-row flex-wrap justify-center m-auto gap-4 md:flex-col'>
       <Button
         onClick={registerForNotifications}
         disabled={isPending || isGranted}
