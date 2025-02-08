@@ -18,6 +18,7 @@
     "gen:vapid": "node ./scripts/genVapid.js"
   },
   "dependencies": {
+    "@block65/webcrypto-web-push": "^1.0.2",
     "@khmyznikov/pwa-install": "0.4.4",
     "@radix-ui/react-slot": "^1.1.2",
     "class-variance-authority": "^0.7.1",
