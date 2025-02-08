@@ -2,7 +2,8 @@ import { get } from 'lodash-es'
 import useSWR from 'swr'
 
 const fetcher = async (subscription) => {
-  const response = await fetch(`${window.API_HOST}/api/check-subscribe?endpoint=${subscription.endpoint}`, {
+  const endpoint = get(subscription, 'endpoint')
+  const response = await fetch(`${window.API_HOST}/api/check-subscribe?endpoint=${endpoint}`, {
     headers: {
       'Content-Type': 'application/json'
     }
