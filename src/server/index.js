@@ -1,5 +1,6 @@
 import { Hono } from 'hono'
-import webPush from 'web-push'
+// import webPush from 'web-push'
+import { buildPushPayload } from '@block65/webcrypto-web-push'
 import { filter, isEmpty, random } from 'lodash-es'
 import { tryit } from 'radash'
 import vapid from '../../conf/vapidKeysConf'
@@ -7,11 +8,16 @@ import vapid from '../../conf/vapidKeysConf'
 const app = new Hono()
 
 // 設定 Web Push VAPID 金鑰
-webPush.setVapidDetails(
-  'mailto:sky172839465@gmail.com',
-  vapid.publicKey,
-  vapid.privateKey
-)
+// webPush.setVapidDetails(
+//   'mailto:sky172839465@gmail.com',
+//   vapid.publicKey,
+//   vapid.privateKey
+// )
+const vapidDetails = {
+  subject: 'mailto:sky172839465@gmail.com',
+  publicKey: vapid.publicKey,
+  privateKey: vapid.privateKey
+}
 
 // store user subscriptions
 let subscriptions = []
@@ -58,18 +64,21 @@ app.options('*', (c) => {
 })
 
 const sendNotification = async (subscription) => {
-  const payload = JSON.stringify({
-    title: 'Hello!',
-    body: `This is a push notification from server. ${new Date().toISOString()}`,
-    unreadCount: random(0, 5)
-  })
-  const [error, result] = await tryit(() => webPush.sendNotification(subscription, payload))()
+  const message = {
+    data: JSON.stringify({
+      title: 'Hello!',
+      body: `This is a push notification from server. ${new Date().toISOString()}`,
+      unreadCount: random(0, 5)
+    })
+  }
+  const payload = await buildPushPayload(message, subscription, vapidDetails)
+  // const [error, result] = await tryit(() => webPush.sendNotification(subscription, payload))()
+  const [error, result] = await tryit(() => fetch(subscription.endpoint, payload))()
   if (error) {
     console.error('sendNotification get error', error)
     return [error]
   }
 
-  console.log(result)
   return [undefined, result]
 }
 
