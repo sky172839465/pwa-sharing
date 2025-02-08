@@ -1,3 +1,4 @@
+import useSWR from 'swr'
 import { delay } from 'lodash-es'
 import { Download,MousePointerClick, PartyPopper, X } from 'lucide-react'
 import { useState } from 'react'
@@ -9,8 +10,19 @@ import { Button } from '@/components/ui/button'
 const SEC = 1000
 const INTERVAL_MS = 10 * SEC
 
+const useSWUpdate = (registration) => {
+  useSWR(
+    registration || null,
+    r => {
+      console.log('Periodic check by swr')
+      r.update()
+    },
+    { refreshInterval: INTERVAL_MS, revalidateOnFocus: true }
+  )
+}
+
 const ReloadPrompt = () => {
-  // const [isHidePrompt, setIsHidePrompt] = useState(false)
+  const [registration, setRegistration] = useState()
   const [isUpdating, setIsUpdating] = useState(false)
   const {
     offlineReady: [offlineReady, setOfflineReady],
@@ -24,15 +36,13 @@ const ReloadPrompt = () => {
 
       // on page load check new sw, if exist trigger upload & refresh flow
       r.update().then(() => updateServiceWorker(true))
-      setInterval(() => {
-        console.log('Periodic check')
-        r.update()
-      }, INTERVAL_MS)
+      setRegistration(r)
     },
     onRegisterError(error) {
       console.log('SW registration error', error)
     }
   })
+  useSWUpdate(registration)
   console.log({ offlineReady, needRefresh, isUpdating })
 
   const onClose = () => {
