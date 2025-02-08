@@ -16,30 +16,45 @@ webPush.setVapidDetails(
 // store user subscriptions
 let subscriptions = []
 
-const allowedOrigin = 'https://pwa-sharing.pages.dev';
+const ALLOWED_ORIGIN = 'https://pwa-sharing.pages.dev'
 
-// Middleware to enforce allowed origins
+// Helper function to set CORS headers
+const setCorsHeaders = (c, allowedOrigin) => {
+  c.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS')
+  c.header('Access-Control-Allow-Headers', '*')
+  c.header('Access-Control-Allow-Origin', allowedOrigin)
+}
+
+// Middleware to handle all routes (GET, POST, etc.)
 app.use('*', async (c, next) => {
   const env = c.env
-
   const origin = c.req.header('Origin')
 
-  // Apply CORS restriction only in production
-  if (env.NODE_ENV === 'production' && origin !== allowedOrigin) {
-    return c.json({ error: 'Access Denied' }, 403)
-  }
-
-  // Set CORS headers (only in production)
   if (env.NODE_ENV === 'production') {
-    c.header('Access-Control-Allow-Origin', allowedOrigin)
-    c.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
-    c.header('Access-Control-Allow-Headers', 'Content-Type')
+    // Only allow specific origin in production
+    if (origin !== ALLOWED_ORIGIN) {
+      return c.json({ error: 'CORS Forbidden' }, 403)
+    }
+    setCorsHeaders(c, ALLOWED_ORIGIN)
   } else {
-    // Allow all origins in development
-    c.header('Access-Control-Allow-Origin', '*')
+    // In development, allow all origins
+    setCorsHeaders(c, '*')
   }
 
   return next()
+})
+
+// Handle Preflight (OPTIONS) Requests
+app.options('*', (c) => {
+  const env = c.env
+  const origin = c.req.header('Origin')
+
+  if (env.NODE_ENV === 'production' && origin !== ALLOWED_ORIGIN) {
+    return c.json({ error: 'CORS Forbidden' }, 403)
+  }
+
+  setCorsHeaders(c, env.NODE_ENV === 'production' ? ALLOWED_ORIGIN : '*')
+  return c.text('', 204)
 })
 
 const sendNotification = async (subscription) => {

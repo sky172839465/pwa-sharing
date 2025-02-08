@@ -4,5 +4,8 @@ compatibility_date = "2025-02-07"
 workers_dev = true
 compatibility_flags = ["nodejs_compat"]
 
+[vars]
+NODE_ENV = "production"
+
 [observability.logs]
 enabled = true
