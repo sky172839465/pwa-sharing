@@ -28,10 +28,6 @@ const clearSubscriptions = () => {
   subscriptions.length = 0
 }
 
-// Run cleanup every 1 hr
-const ONE_HOUR = 60 * 60 * 1000
-setInterval(clearSubscriptions, ONE_HOUR);
-
 const ALLOWED_ORIGIN = 'https://pwa-sharing.pages.dev'
 
 // Helper function to set CORS headers
@@ -146,4 +142,10 @@ app.post('/api/send-notification', async (c) => {
   return c.json({ status: true, message: 'Notification sent!' })
 })
 
-export default app
+export default {
+  fetch: app.fetch,
+  async scheduled (event) {
+    console.log("Scheduled job triggered at:", event.scheduledTime)
+    clearSubscriptions()
+  }
+}

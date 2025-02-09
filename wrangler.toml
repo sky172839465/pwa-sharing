@@ -9,3 +9,6 @@ NODE_ENV = "production"
 
 [observability.logs]
 enabled = true
+
+[triggers]
+crons = ["0 * * * *"]
