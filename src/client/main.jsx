@@ -6,15 +6,11 @@ import { tryit } from 'radash'
 
 if ('serviceWorker' in navigator) {
   const registerSW = async () => {
-    const [error, result] = await tryit(
-      () => navigator.serviceWorker.register('/sw.js')
-    )()
-    if (error) {
-      console.log('Service Worker registration failed:', error)
+    const [error] = await tryit(() => navigator.serviceWorker.register('/sw.js'))()
+    if (!error) {
       return
     }
-
-    result.update()
+    console.log('Service Worker registration failed:', error)
   }
   registerSW()
 }
