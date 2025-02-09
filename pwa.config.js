@@ -4,7 +4,7 @@ import fs from 'fs'
 import { flow, filter, orderBy, map,  } from 'lodash-es'
 import sizeOf from 'image-size'
 
-const screenshotType = 'image/png'
+const imageType = 'image/png'
 const richInstallFolder = 'rich-install'
 const directoryPath = path.resolve(__dirname, `public/${richInstallFolder}`)
 const screenshots = flow(
@@ -19,9 +19,10 @@ const screenshots = flow(
       label: `PWA sharing ${file.replace('.png', '')}`,
       form_factor: file.match(/\d+_d/) ? 'wide' : 'narrow',
       sizes: `${dimensions.width}x${dimensions.height}`,
-      type: screenshotType
+      type: imageType
     }
-  })
+  }),
+  files => orderBy(files, 'form_factor')
 )()
 
 export default VitePWA({
@@ -33,29 +34,31 @@ export default VitePWA({
     screenshots,
     theme_color: '#ffffff',
     display: 'standalone',
-    'icons': [
+    orientation: 'natural',
+    icons: [
       {
         'src': 'pwa-64x64.png',
-        'sizes': '64x64',
-        'type': 'image/png'
+        'sizes': '64x64'
       },
       {
         'src': 'pwa-192x192.png',
-        'sizes': '192x192',
-        'type': 'image/png'
+        'sizes': '192x192'
+      },
+      {
+        'src': 'pwa-512x512.png',
+        'sizes': '512x512'
       },
       {
         'src': 'pwa-512x512.png',
         'sizes': '512x512',
-        'type': 'image/png'
+        'purpose': 'any'
       },
       {
         'src': 'maskable-icon-512x512.png',
         'sizes': '512x512',
-        'type': 'image/png',
         'purpose': 'maskable'
       }
-    ]
+    ].map(icon => ({ ...icon, type: imageType }))
   },
   devOptions: {
     enabled: true,
