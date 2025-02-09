@@ -50,6 +50,10 @@
   npm run preview
   ```
 - Open website on `https://localhost:8080`
+- `Another terminal` Update client code & rebuild website to simulate production update service worker
+  ```shell
+  npm run build:dev
+  ```
 
 ### Generate icons
 - Default target icon for generate is in `pwa-assets.config.js` > `public/favicon.svg`  
