@@ -41,8 +41,15 @@
   ```shell
   npm run dev:server
   ```
-- Open website on `https://localhost:5173` (default)
+- Open website on `https://localhost:5173` (default, might change)
   > notification service will run on `https://localhost:8080`
+
+### Simulate Production
+- build website & using `hono` as web server & notification server
+  ```shell
+  npm run preview
+  ```
+- Open website on `https://localhost:8080`
 
 ### Generate icons
 - Default target icon for generate is in `pwa-assets.config.js` > `public/favicon.svg`  
