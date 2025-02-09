@@ -26,6 +26,7 @@ const screenshots = flow(
 )()
 
 export default VitePWA({
+  registerType: 'autoUpdate',
   strategies: 'injectManifest',
   manifest: {
     name: 'PWA sharing Web App',
