@@ -22,7 +22,7 @@ const screenshots = flow(
       type: imageType
     }
   }),
-  files => orderBy(files, 'form_factor')
+  files => orderBy(files, file => file.form_factor, 'desc')
 )()
 
 export default VitePWA({
