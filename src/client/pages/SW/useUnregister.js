@@ -28,16 +28,29 @@ const useUnregister = () => {
 
     setIsPending(true)
     const registrations = await navigator.serviceWorker.getRegistrations()
-    const [error] = await tryit(() => {
+    const [unregisterError] = await tryit(() => {
       return Promise.all(registrations.map((item) => item.unregister()))
     })()
+
+    const [cleanCacheError] = await tryit(async () => {
+      const cacheNames = await caches.keys()
+      return Promise.all(cacheNames.map(cache => caches.delete(cache)))
+    })()
+  
     setIsPending(false)
     setRegistration(null)
-    if (error) {
-      console.log(error)
-      toast(`Unregister failed, ${error.message}`)
+    if (unregisterError) {
+      console.log(unregisterError)
+      toast(`Unregister failed, ${unregisterError.message}`)
       return
     }
+
+    if (cleanCacheError) {
+      console.log(cleanCacheError)
+      toast(`cleanCache failed, ${cleanCacheError.message}`)
+      return
+    }
+
     toast('Unregister success!')
   }
 
