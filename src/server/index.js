@@ -1,4 +1,5 @@
 import { Hono } from 'hono'
+import { serveStatic } from '@hono/node-server/serve-static'
 // import webPush from 'web-push'
 import { buildPushPayload } from '@block65/webcrypto-web-push'
 import { filter, get, random, size } from 'lodash-es'
@@ -38,6 +39,13 @@ const setCorsHeaders = (c, allowedOrigin) => {
   c.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS')
   c.header('Access-Control-Allow-Headers', '*')
   c.header('Access-Control-Allow-Origin', allowedOrigin)
+}
+
+// ⚠️ Cloudflare Workers `process.env.NODE_ENV` will be `undefined`
+const isDev = typeof process !== 'undefined' && process.env.NODE_ENV !== 'production'
+if (isDev) {
+  app.use('/*', serveStatic({ root: './dist' }))
+  app.get('*', serveStatic({ path: './dist/index.html' }))
 }
 
 // Middleware to handle all routes (GET, POST, etc.)
@@ -80,7 +88,11 @@ const sendNotification = async (subscription) => {
       unreadCount: random(0, 5)
     })
   }
-  const payload = await buildPushPayload(message, subscription, vapidDetails)
+  const [payloadError, payload] = await tryit(() => buildPushPayload(message, subscription, vapidDetails))()
+  if (payloadError) {
+    console.error('buildPushPayload get error', payloadError)
+    return [payloadError]
+  }
   // const [error, result] = await tryit(() => webPush.sendNotification(subscription, payload))()
   const [error, response] = await tryit(() => fetch(subscription.endpoint, payload))()
   if (error) {
@@ -90,11 +102,11 @@ const sendNotification = async (subscription) => {
 
   if (!response.ok) {
     // If the response is not OK (status outside 200–299)
-    console.log(`sendNotification, status ${response.status}, statusText: ${response.statusText}`)
+    console.log(`response not ok, status ${response.status}, statusText: ${response.statusText}`)
     return [new Error(response.statusText)]
   }
 
-  console.log(`sendNotification, status ${response.status}`)
+  // console.log(`sendNotification, status ${response.status}`)
 
   return [undefined, response]
 }

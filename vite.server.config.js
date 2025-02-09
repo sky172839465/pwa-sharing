@@ -9,7 +9,7 @@ export default defineConfig(({ mode }) => {
   return {
     root: 'src/server',
     plugins: [
-      (!isProd && devServer({ entry: 'index.js' })),
+      (!isProd && devServer({ entry: 'index.js', exclude: [] })),
       (isProd && hono({
         entry: 'index.js',
         emptyOutDir: true,
