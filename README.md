@@ -45,7 +45,7 @@
   > notification service will run on `https://localhost:8080`
 
 ### Auto update service worker
-- Change branch to `auto-update`
+- Change branch to `auto-update`  
   https://github.com/sky172839465/pwa-sharing/tree/auto-update
 
 ### Simulate Production
