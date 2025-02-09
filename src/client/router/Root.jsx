@@ -23,7 +23,7 @@ const Root = () => {
     >
       <div className='flex flex-col min-h-dvh w-full'>
         {pathname !== '/' && (
-          <LazyNavs />
+          <LazyNavs isNav />
         )}
         <div className='flex grow items-center'>
           <Outlet />
