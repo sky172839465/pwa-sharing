@@ -15,7 +15,7 @@ const Page = () => {
           Unregister SW
         </Button>
       </div>
-      <div className='md:max-w-xl container prose p-4'>
+      <div className='md:max-w-[60vw] container prose p-4'>
         <div dangerouslySetInnerHTML={{ __html: html }} />
       </div>
     </div>
