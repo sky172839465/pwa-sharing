@@ -1,12 +1,16 @@
 import { cleanupOutdatedCaches, precacheAndRoute } from 'workbox-precaching'
+import { clientsClaim } from 'workbox-core'
+
+self.skipWaiting()
+clientsClaim()
 
 // periodic check new service worker available
 // after prompt click send `SKIP_WAITING` message to reload page & install new sw
-self.addEventListener('message', (event) => {
-  if (event.data && event.data.type === 'SKIP_WAITING') {
-    self.skipWaiting()
-  }
-})
+// self.addEventListener('message', (event) => {
+//   if (event.data && event.data.type === 'SKIP_WAITING') {
+//     self.skipWaiting()
+//   }
+// })
 
 const getNotificationData = (event) => {
   const stringifyData = event.data.text()
