@@ -142,6 +142,12 @@ app.post('/api/send-notification', async (c) => {
   return c.json({ status: true, message: 'Notification sent!' })
 })
 
+app.post('/api/check-subscribe', async (c) => {
+  const subscription = await c.req.json()
+  const isSubscribed = subscriptions.some(s => s.endpoint === subscription.endpoint)
+  return c.json({ status: true, isSubscribed })
+})
+
 export default {
   fetch: app.fetch,
   async scheduled (event) {

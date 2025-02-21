@@ -2,6 +2,8 @@ import { useState, useEffect, useCallback } from 'react'
 import { tryit } from 'radash'
 import useSubscribe from './useSubscribe.js'
 import useUnsubscribe from './useUnsubscribe.js'
+import useCheckSubscribe from './useCheckSubscribe.js'
+import { get } from 'lodash-es'
 
 const urlBase64ToUint8Array = (base64String) => {
   const padding = '='.repeat((4 - base64String.length % 4) % 4)
@@ -31,6 +33,7 @@ const useNotification = () => {
   const [subscription, setSubscription] = useState()
   const { trigger: subscribe } = useSubscribe()
   const { trigger: unsubscribe } = useUnsubscribe()
+  const { isLoading, trigger: checkSubscribe } = useCheckSubscribe()
 
   useEffect(() => {
     const checkIsRegistered = async () => {
@@ -42,8 +45,16 @@ const useNotification = () => {
       setIsPending(true)
       const registration = await navigator.serviceWorker.ready
       const newSubscription = await registration.pushManager.getSubscription()
+      const [error, result] = await tryit(() => checkSubscribe(newSubscription))()
+      if (error) {
+        console.error('Error checking subscription:', error)
+        setIsPending(false)
+        return
+      }
+      const isSubscribed = get(result, 'isSubscribed')
+
       setSubscription(newSubscription)
-      setIsGranted(!!newSubscription)
+      setIsGranted(isSubscribed)
       console.log({ subscription: newSubscription })
       if (!newSubscription) {
         console.log('checkIsRegistered: subscription not exist')
@@ -55,7 +66,7 @@ const useNotification = () => {
       setIsRegistered(true)
     }
     checkIsRegistered()
-  }, [])
+  }, [checkSubscribe])
 
   const unsubscribeNotification = useCallback(() => {
     subscription.unsubscribe()
@@ -101,7 +112,7 @@ const useNotification = () => {
 
   return {
     isPending,
-    isRegistered,
+    isRegistered: isRegistered && !isLoading,
     isGranted,
     subscription,
     registerForNotifications,
