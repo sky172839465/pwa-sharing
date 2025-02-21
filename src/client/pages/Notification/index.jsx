@@ -39,7 +39,7 @@ const Page = () => {
             )
           }
         </Button>
-        {isRegistered && (
+        {(isRegistered && isGranted) && (
           <div className='contents [&_svg]:size-5'>
             <Button
               onClick={() => subscribe(subscription)}
