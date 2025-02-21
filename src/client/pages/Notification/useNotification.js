@@ -45,7 +45,9 @@ const useNotification = () => {
       setIsPending(true)
       const registration = await navigator.serviceWorker.ready
       const newSubscription = await registration.pushManager.getSubscription()
-      const [error, result] = await tryit(() => checkSubscribe(newSubscription))()
+      const [error, result] = newSubscription
+        ? await tryit(() => checkSubscribe(newSubscription))()
+        : [undefined, { isSubscribed: false }]
       if (error) {
         console.error('Error checking subscription:', error)
         setIsPending(false)
