@@ -24,14 +24,14 @@ const Page = () => {
           onClick={registerForNotifications}
           disabled={isPending || isGranted}
         >
-          {!isRegistered && (
+          {(!isRegistered || !isGranted) && (
             <>
               <Bell className='size-5' />
               Register
             </>
           )}
           {
-            isRegistered && (
+            (isRegistered && isGranted) && (
               <>
                 <CircleCheck className='size-5' />
                 Registered
