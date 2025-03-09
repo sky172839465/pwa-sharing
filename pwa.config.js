@@ -32,7 +32,7 @@ export default VitePWA({
     short_name: 'PWA sharing',
     description: 'PWA sharing example code',
     screenshots,
-    theme_color: '#ffffff',
+    theme_color: '#51a2ff',
     display: 'standalone',
     orientation: 'natural',
     icons: [
