@@ -28,7 +28,7 @@ const screenshots = flow(
 export default VitePWA({
   strategies: 'injectManifest',
   manifest: {
-    name: 'PWA sharing',
+    name: 'PWA sharing Web App',
     short_name: 'PWA sharing',
     description: 'PWA sharing example code',
     screenshots,
