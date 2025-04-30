@@ -70,6 +70,6 @@
     "vite-plugin-markdown": "^2.2.0",
     "vite-plugin-pwa": "^0.21.1",
     "workbox-window": "^7.3.0",
-    "wrangler": "^3.107.3"
+    "wrangler": "^4.13.2"
   }
 }
