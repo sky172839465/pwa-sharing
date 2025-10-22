@@ -26,7 +26,7 @@
     "async-es": "^3.2.6",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "hono": "^4.9.7",
+    "hono": "^4.10.2",
     "lodash-es": "^4.17.21",
     "lucide-react": "^0.474.0",
     "next-themes": "^0.4.4",
